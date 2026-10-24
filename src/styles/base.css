@@ -1,0 +1,48 @@
+/* Layout : deux univers qui partagent les mêmes jetons.
+   — Enfant : une colonne de téléphone (460px max) sur un ciel de nuit, pages en parchemin, l'or pour ce qui se gagne.
+   — Adulte : fond clair et calme, cartes blanches, bleu nuit pour la marque. */
+:root {
+  --night: #13215C; --night-deep: #0B1543; --night-card: #1B2B74; --line: rgba(238, 242, 255, .16);
+  --gold: #F6B82F; --gold-soft: #FFE3A1; --gold-deep: #C98A0E; --gold-ink: #3A2600;
+  --green: #2E9E68; --green-deep: #1E7349; --green-soft: #DDF3E6; --green-ink: #124530;
+  --coral: #F0685A; --coral-deep: #C24C40;
+  --parchment: #FBF3DF; --parchment-2: #F1E2BE; --ink: #2B2442; --ink-soft: #615A7C;
+  --on-night: #EEF2FF; --on-night-soft: #AEBBEA;
+  /* adulte */
+  --a-bg: #F4F3F9; --a-card: #FFFFFF; --a-ink: #22203A; --a-soft: #5E5B7A; --a-line: #E3E1EE; --a-brand: #13215C; --a-accent: #3F5CA8; --a-danger: #B83A2B;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Andika", "Verdana", system-ui, sans-serif;
+  --ui: "Andika", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+html { box-sizing: border-box; height: 100%; -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; min-height: 100%; font-family: var(--ui); font-size: 16px; line-height: 1.45; -webkit-tap-highlight-color: transparent; background: var(--a-bg); color: var(--a-ink); }
+#root { min-height: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-user-select: none; user-select: none; }
+button:disabled { cursor: default; }
+img { max-width: 100%; }
+a { color: var(--a-accent); }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+[hidden] { display: none !important; }
+.ic { flex: none; }
+.art-loading { display: block; background: linear-gradient(110deg, rgba(255,255,255,.06) 30%, rgba(255,255,255,.18) 50%, rgba(255,255,255,.06) 70%) 0 0/200% 100%, var(--parchment-2); animation: shimmer 1.4s linear infinite; aspect-ratio: 16/10; }
+@keyframes shimmer { to { background-position: -200% 0, 0 0; } }
+.spinner { min-height: 50vh; display: grid; place-items: center; align-content: center; gap: 10px; font-family: var(--display); font-weight: 700; color: var(--a-soft); }
+.spinner .lumi .lumi-flame { animation: flick 1s ease-in-out infinite; }
+.mini-stars { display: inline-flex; color: var(--gold); }
+
+/* Lumi */
+.lumi { display: block; overflow: visible; }
+.lumi-flame { transform-origin: 104px 48px; animation: flick 1.8s ease-in-out infinite; }
+.lumi-glow { transform-origin: 105px 40px; animation: glow 2.6s ease-in-out infinite; }
+@keyframes flick { 0%, 100% { transform: scale(1, 1) skewX(0); } 30% { transform: scale(.93, 1.07) skewX(-4deg); } 60% { transform: scale(1.04, .95) skewX(3deg); } }
+@keyframes glow { 50% { transform: scale(1.14); opacity: .75; } }
+
+.avatar { flex: none; border-radius: 50%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .attn::after { animation: none !important; opacity: 1; transform: none; }
+}
