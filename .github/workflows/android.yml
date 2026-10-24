@@ -32,15 +32,12 @@ jobs:
 
       - name: Configurer Bubblewrap (JDK et SDK Android du serveur)
         run: |
-          # Bubblewrap attend un SDK avec un dossier « tools » : on reproduit cette organisation
-          SDK="$HOME/android-sdk"
-          mkdir -p "$SDK"
-          for d in "$ANDROID_HOME"/*; do ln -s "$d" "$SDK/$(basename "$d")"; done
-          [ -e "$SDK/tools" ] || ln -s "$ANDROID_HOME/cmdline-tools/latest" "$SDK/tools"
-          ls "$SDK" "$SDK/build-tools"
-          [ -d "$ANDROID_HOME/build-tools/34.0.0" ] || yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;34.0.0" > /dev/null
+          # Bubblewrap attend un dossier « tools » dans le SDK : on le crée à partir des outils en ligne de commande
+          [ -e "$ANDROID_HOME/tools" ] || sudo ln -s "$ANDROID_HOME/cmdline-tools/latest" "$ANDROID_HOME/tools"
+          ls "$ANDROID_HOME" "$ANDROID_HOME/build-tools" "$ANDROID_HOME/platforms"
+          [ -d "$ANDROID_HOME/build-tools/34.0.0" ] || yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;34.0.0" > /dev/null || true
           mkdir -p ~/.bubblewrap
-          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$SDK\"}" > ~/.bubblewrap/config.json
+          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$ANDROID_HOME\"}" > ~/.bubblewrap/config.json
           cat ~/.bubblewrap/config.json
 
       - name: Numéro de version
@@ -52,7 +49,7 @@ jobs:
 
       - name: Générer le projet Android
         working-directory: android
-        run: yes | bubblewrap update --skipVersionUpgrade --manifest=./twa-manifest.json
+        run: bubblewrap update --skipVersionUpgrade --manifest=./twa-manifest.json < /dev/null
 
       - name: Construire et signer l'APK
         working-directory: android
@@ -60,8 +57,14 @@ jobs:
           BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
-          test -n "$BUBBLEWRAP_KEYSTORE_PASSWORD" || { echo "Secret ANDROID_KEYSTORE_PASSWORD manquant"; exit 1; }
-          yes | bubblewrap build --skipPwaValidation --manifest=./twa-manifest.json
+          test -n "$BUBBLEWRAP_KEYSTORE_PASSWORD" || { echo "::error::Secret ANDROID_KEYSTORE_PASSWORD manquant"; exit 1; }
+          set -o pipefail
+          if ! bubblewrap build --skipPwaValidation --manifest=./twa-manifest.json < /dev/null 2>&1 | tee build.log; then
+            # Résumé lisible de l'erreur dans les annotations du run
+            grep -A12 "What went wrong" build.log | head -30 | sed 's/^/::error::/' || true
+            grep -E "ERROR|Exception:|error:" build.log | grep -v "^\s*at " | head -15 | sed 's/^/::error::/' || true
+            exit 1
+          fi
           ls -la
           cp app-release-signed.apk ../abiq.apk
           cp app-release-bundle.aab ../abiq.aab || true
