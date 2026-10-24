@@ -21,8 +21,8 @@ export function AdminHome() {
         return (<>
           <h2 className="a-h2">Utilisation</h2>
           <div className="kpis">
-            <div className="kpi"><b>{s.parents}</b><span>comptes adultes</span></div>
-            <div className="kpi"><b>{s.animateurs}</b><span>dont animateurs</span></div>
+            <div className="kpi"><b>{s.parents}</b><span>comptes parents</span></div>
+            <div className="kpi"><b>{s.animateurs}</b><span>comptes animateurs</span></div>
             <div className="kpi"><b>{s.children}</b><span>enfants en famille</span></div>
             <div className="kpi"><b>{s.group_children}</b><span>enfants en groupe</span></div>
             <div className="kpi"><b>{s.groups}</b><span>groupes</span></div>
