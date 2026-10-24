@@ -106,6 +106,22 @@ Compter environ 20 minutes. Il faut un compte GitHub (le dépôt), un compte [Su
 
 ---
 
+## Application Android (APK)
+
+L'appli Android ouvre le site en plein écran grâce à Chrome (Trusted Web Activity) : même contenu,
+mises à jour instantanées, et la lecture à voix haute fonctionne.
+
+- **Télécharger la dernière version** : https://github.com/Gabish1001/Abiq/releases/latest/download/abiq.apk
+  (sur le téléphone, autoriser l'installation depuis le navigateur quand Android le demande). Android 7 minimum.
+- **Construction** : automatique sur GitHub (workflow « Application Android ») dès qu'un fichier de `android/` change,
+  ou manuellement depuis l'onglet *Actions* > *Application Android* > *Run workflow*.
+- **Signature** : `android/abiq.keystore`, protégé par le secret GitHub `ANDROID_KEYSTORE_PASSWORD`.
+  Ne jamais perdre ce mot de passe : sans lui, impossible de publier une mise à jour installable par-dessus.
+- **Plein écran** : `public/.well-known/assetlinks.json` lie l'appli (`com.abiq.aventures`) au site.
+  Si le domaine change, mettre à jour `android/twa-manifest.json` (host, URLs) et republier ce fichier sur le nouveau domaine.
+
+---
+
 ## Pour les développeurs
 
 - **Stack** : Vite + React 19 + TypeScript, React Router, PWA (vite-plugin-pwa), Supabase (Postgres, Auth, Storage).
