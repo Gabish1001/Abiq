@@ -32,8 +32,15 @@ jobs:
 
       - name: Configurer Bubblewrap (JDK et SDK Android du serveur)
         run: |
+          # Bubblewrap attend un SDK avec un dossier « tools » : on reproduit cette organisation
+          SDK="$HOME/android-sdk"
+          mkdir -p "$SDK"
+          for d in "$ANDROID_HOME"/*; do ln -s "$d" "$SDK/$(basename "$d")"; done
+          [ -e "$SDK/tools" ] || ln -s "$ANDROID_HOME/cmdline-tools/latest" "$SDK/tools"
+          ls "$SDK" "$SDK/build-tools"
+          [ -d "$ANDROID_HOME/build-tools/34.0.0" ] || yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;34.0.0" > /dev/null
           mkdir -p ~/.bubblewrap
-          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$ANDROID_HOME\"}" > ~/.bubblewrap/config.json
+          echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$SDK\"}" > ~/.bubblewrap/config.json
           cat ~/.bubblewrap/config.json
 
       - name: Numéro de version
