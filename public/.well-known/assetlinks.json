@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.abiq.aventures",
+      "sha256_cert_fingerprints": ["D0:C3:5F:42:3E:AD:BE:E5:79:52:0B:1E:3D:27:EE:6F:75:B4:78:30:F6:04:50:93:3C:BB:D8:03:03:6E:FE:A1"]
+    }
+  }
+]
