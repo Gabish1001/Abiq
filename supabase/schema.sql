@@ -265,8 +265,15 @@ create policy groups_owner on public.groups for all to authenticated
 
 -- enfants : le parent pour ses enfants, l'animateur pour les enfants de ses groupes,
 -- l'appareil lié pendant une séance (lecture seule)
+-- (règle écrite sur les colonnes de la ligne, et non via can_access_child(), pour que
+--  la ligne qu'on vient de créer soit lisible dans la même requête : insert ... returning)
 create policy children_read on public.children for select to authenticated
-  using (public.can_access_child(id));
+  using (
+    parent_id = auth.uid()
+    or public.owns_group(group_id)
+    or exists (select 1 from public.device_links d
+               where d.child_id = children.id and d.user_id = auth.uid() and d.expires_at > now())
+  );
 create policy children_insert on public.children for insert to authenticated
   with check (
     (parent_id = auth.uid() and group_id is null)

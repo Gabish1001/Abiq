@@ -71,6 +71,7 @@ export function errorMessage(e: unknown): string {
   if (/Password should be at least/i.test(m)) return "Le mot de passe doit contenir au moins 8 caractères.";
   if (/Anonymous sign-ins are disabled/i.test(m)) return "La connexion des appareils n'est pas activée. L'administrateur doit activer « Anonymous sign-ins » dans Supabase.";
   if (/Failed to fetch|NetworkError|network/i.test(m)) return "Pas de connexion internet. Vérifiez le réseau et réessayez.";
+  if (/row-level security|permission denied/i.test(m)) return "Cette action n'est pas autorisée avec ce compte. Reconnectez-vous et réessayez ; si ça continue, prévenez l'organisateur.";
   if (/rate limit/i.test(m)) return "Trop d'essais en peu de temps. Attendez une minute et réessayez.";
   return m || "Une erreur est survenue. Réessayez.";
 }

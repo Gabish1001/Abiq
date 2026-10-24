@@ -2,7 +2,17 @@ import { Link } from "react-router-dom";
 import { enterDemo } from "@/lib";
 import { LEVELS } from "@/content";
 import { ArtImg, Icon, Lumi } from "@/ui/kit";
-import { PubShell } from "./PubShell";
+import { APK_URL, PubShell, canOfferApk } from "./PubShell";
+
+function ApkButton({ light }: { light?: boolean }) {
+  if (!canOfferApk()) return null;
+  return (
+    <a className={"apk-btn" + (light ? " light" : "")} href={APK_URL} rel="noopener">
+      <Icon name="download" size={22} />
+      <span><b>Télécharger l'appli Android</b><small>Fichier APK de 2 Mo · Android 7 ou plus récent</small></span>
+    </a>
+  );
+}
 
 export function Landing() {
   return (
@@ -11,11 +21,12 @@ export function Landing() {
         <div className="hero-in">
           <div>
             <h1>Des histoires de la Bible que les enfants ont <em>envie de continuer</em></h1>
-            <p>Une page du Grand Livre s'est effacée. Pour la retrouver, l'enfant devine qui s'y cache, reconstitue l'image, écoute l'histoire et répond à quelques questions. Une nouvelle aventure chaque dimanche, pour les 6-8 ans.</p>
+            <p>Une page du Grand Livre s'est effacée. Pour la retrouver, l'enfant devine qui s'y cache, reconstitue l'image, écoute l'histoire et répond à quelques questions. Huit aventures à découvrir l'une après l'autre, pour les 6-8 ans.</p>
             <div className="row">
               <Link className="a-btn gold lg" to="/inscription">Créer un compte gratuit</Link>
               <button type="button" className="a-btn lg" onClick={enterDemo}><Icon name="play" size={18} />Essayer sans compte</button>
             </div>
+            <ApkButton />
             <p className="small" style={{ fontSize: ".95rem" }}>Un code de séance donné par votre animateur ? <Link to="/rejoindre" style={{ color: "var(--gold)", fontWeight: 700 }}>Rejoindre la séance</Link></p>
           </div>
           <div className="hero-art">
@@ -78,6 +89,12 @@ export function Landing() {
           <Link className="a-btn primary lg" to="/inscription">Créer un compte</Link>
           <Link className="a-btn lg" to="/connexion">J'ai déjà un compte</Link>
         </div>
+        {canOfferApk() && (
+          <div className="apk-help">
+            <ApkButton light />
+            <p className="small">Sur le téléphone, ouvrez le fichier téléchargé puis autorisez l'installation si Android le demande. L'appli est mise à jour automatiquement avec le site.</p>
+          </div>
+        )}
       </section>
     </PubShell>
   );

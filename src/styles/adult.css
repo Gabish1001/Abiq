@@ -216,3 +216,15 @@
   .ed-bar .a-btn { min-height: 38px; padding: 0 10px; font-size: .86rem; }
   .ed-bar .row > span:first-child { flex: none; max-width: 40vw; white-space: normal; font-size: .8rem; }
 }
+
+/* bouton de téléchargement de l'appli Android */
+.apk-btn { display: inline-flex; align-items: center; gap: 12px; margin-top: 16px; padding: 10px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); color: #fff; text-decoration: none; line-height: 1.2; text-align: left; }
+.apk-btn:hover { background: rgba(255,255,255,.14); }
+.apk-btn b { display: block; font-size: 1rem; }
+.apk-btn small { display: block; font-size: .8rem; opacity: .75; }
+.apk-btn .ic { flex: none; color: var(--gold); }
+.apk-btn.light { border-color: #E3D7BC; background: #fff; color: var(--night); }
+.apk-btn.light .ic { color: var(--night); }
+.apk-btn.light:hover { background: #FFF8E8; }
+.apk-help { margin: 22px auto 0; max-width: 460px; display: grid; justify-items: center; gap: 4px; }
+.apk-help p { color: var(--ink-soft); margin: 4px 0 0; }

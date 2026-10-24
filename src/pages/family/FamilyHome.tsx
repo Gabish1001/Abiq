@@ -45,7 +45,7 @@ export function FamilyHome() {
           <li>Touchez « Faire jouer » : l'écran passe dans l'espace enfant.</li>
           <li>Votre enfant découvre une page du Grand Livre : mystère, puzzle, histoire, quiz.</li>
           <li>Pour revenir ici, maintenez le bouton « Espace adulte » en bas de son écran.</li>
-          <li>Une nouvelle page s'ouvre chaque dimanche : c'est le rendez-vous de la semaine.</li>
+          <li>Chaque page terminée ouvre la suivante : huit aventures à découvrir, de Noé au bon Samaritain.</li>
         </ol>
       </div>
       {adding && <ChildFormModal onClose={() => setAdding(false)} onSaved={() => { setAdding(false); q.reload(); }} />}

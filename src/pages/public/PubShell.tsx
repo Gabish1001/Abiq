@@ -5,6 +5,17 @@ import { Brand, DemoBand } from "@/ui/AdultShell";
 
 export const CONTACT = (import.meta.env.VITE_CONTACT_EMAIL as string | undefined) || "";
 
+/** Dernière version de l'appli Android, publiée automatiquement par GitHub (workflow « Application Android »). */
+export const APK_URL = "https://github.com/Gabish1001/Abiq/releases/latest/download/abiq.apk";
+
+/** Inutile de proposer l'APK dans l'appli elle-même ni sur iPhone/iPad. */
+export function canOfferApk() {
+  if (typeof window === "undefined") return false;
+  const inApp = window.matchMedia?.("(display-mode: standalone)").matches || document.referrer.startsWith("android-app://");
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  return !inApp && !ios;
+}
+
 export function PubShell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const adult = user && !user.anonymous;

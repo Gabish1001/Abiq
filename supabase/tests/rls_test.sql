@@ -42,7 +42,8 @@ reset role;
 -- Parent A crée un enfant ; ne peut pas se donner les droits admin
 set role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
-insert into public.children (parent_id, pseudonym, avatar) values ('00000000-0000-0000-0000-00000000000a', 'Ama', 'lion');
+-- « returning » comme le fait l'application (PostgREST) : la ligne créée doit être lisible tout de suite
+insert into public.children (parent_id, pseudonym, avatar) values ('00000000-0000-0000-0000-00000000000a', 'Ama', 'lion') returning id;
 insert into public.progress (child_id, level_id, stars) select id, 'noe', 3 from public.children where pseudonym = 'Ama';
 do $$ begin
   assert (select count(*) from public.children) = 1, 'le parent voit son enfant';
@@ -90,11 +91,11 @@ reset role;
 -- Animateur : groupe, enfants du groupe, séance
 set role authenticated;
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000c', false);
-insert into public.groups (animateur_id, name) values ('00000000-0000-0000-0000-00000000000c', 'École du dimanche 6-8');
+insert into public.groups (animateur_id, name) values ('00000000-0000-0000-0000-00000000000c', 'École du dimanche 6-8') returning id;
 insert into public.children (group_id, pseudonym, avatar)
-  select id, p, 'lion' from public.groups, unnest(array['Junior','Grâce','Emmanuel']) p;
+  select id, p, 'lion' from public.groups, unnest(array['Junior','Grâce','Emmanuel']) p returning id;
 insert into public.sessions (group_id, animateur_id, title, level_ids, mode)
-  select id, '00000000-0000-0000-0000-00000000000c', 'Séance Noé', array['noe'], 'devices' from public.groups;
+  select id, '00000000-0000-0000-0000-00000000000c', 'Séance Noé', array['noe'], 'devices' from public.groups returning id;
 select public.start_session(id) from public.sessions;
 do $$ begin
   assert (select count(*) from public.children) = 3, 'l''animateur voit les enfants de son groupe et pas ceux des familles';
