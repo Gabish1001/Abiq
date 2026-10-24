@@ -32,6 +32,7 @@ export function AdultShell({ children, narrow }: { children: ReactNode; narrow?:
       <header className="a-head">
         <div className="a-head-in">
           <Brand to="/famille" />
+          <Link className="a-home" to="/" aria-label="Retour à l'accueil du site"><Icon name="home" size={18} /><span>Accueil</span></Link>
           <button type="button" className="a-menu-btn" aria-expanded={open} aria-label="Menu" onClick={() => setOpen(o => !o)}><Icon name={open ? "close" : "menu"} /></button>
           <nav className={"a-nav" + (open ? " open" : "")} aria-label="Navigation principale">
             <NavLink to="/famille" end><Icon name="heart" size={18} />Ma famille</NavLink>

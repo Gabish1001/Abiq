@@ -335,3 +335,12 @@
 @media (min-width: 900px) and (min-aspect-ratio: 4/3) {
   .kid .mys-frame, .kid .board { width: min(100%, 58vh); margin-left: auto; margin-right: auto; }
 }
+
+/* bouton Accueil en haut des écrans enfant */
+.kid-top { flex: none; display: flex; padding-top: 8px; }
+.kid-top + .kid-bar { min-height: 58px; padding-top: 4px; }
+.gate.compact { margin-top: 0; align-self: flex-start; padding: 3px 14px 3px 3px; gap: 8px; font-size: .9rem; cursor: pointer; }
+.gate.compact b { font-size: .9rem; }
+.gate.compact .ring { width: 32px; height: 32px; }
+.gate.compact .ring span { width: 26px; height: 26px; }
+.gate-nudge { font-weight: 400; font-size: .8rem; color: var(--gold-soft); }

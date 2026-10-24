@@ -24,7 +24,7 @@ export function ScreenPage() {
   const timer = useRef<number | undefined>(undefined);
 
   if (q.loading && !q.data) return <div className="kid"><Spinner /></div>;
-  if (q.error || !q.data) return <KidShell bar={<span />}><KidMessage title="Séance introuvable" text={q.error || ""} /></KidShell>;
+  if (q.error || !q.data) return <KidShell home="free" bar={<span />}><KidMessage title="Séance introuvable" text={q.error || ""} /></KidShell>;
   sess.current = sess.current || q.data.s;
   const levels = q.data.levels;
   const level = levels.find(l => l.id === cur) || (levels.length === 1 ? levels[0] : null);
@@ -42,7 +42,7 @@ export function ScreenPage() {
   };
 
   if (!level) return (
-    <KidShell bar={<><span /><div className="bar-title">Séance de groupe</div><span /></>}>
+    <KidShell home="free" bar={<><span /><div className="bar-title">Séance de groupe</div><span /></>}>
       <div className="stack screen-in">
         <div className="cgrid">
           {levels.map(l => <button key={l.id} type="button" className="ccard next" onClick={() => setCur(l.id)}><span className="cc-q">{l.position}</span><span className="cc-name">Page {l.position}</span><span className="cc-sub">{sess.current!.screen_results[l.id]?.completed_at ? "Terminée" : "À jouer"}</span></button>)}

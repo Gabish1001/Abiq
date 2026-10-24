@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Icon } from "@/ui/kit";
 import { useAuth } from "@/lib/auth";
 import { Brand, DemoBand } from "@/ui/AdultShell";
 
@@ -18,12 +19,14 @@ export function canOfferApk() {
 
 export function PubShell({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const { pathname } = useLocation();
   const adult = user && !user.anonymous;
   return (
     <div className="pub">
       <header className="pub-head">
         <Brand />
         <nav aria-label="Navigation">
+          {pathname !== "/" && <Link className="a-btn sm" to="/" aria-label="Retour à l'accueil"><Icon name="home" size={16} /><span className="hide-xs">Accueil</span></Link>}
           <Link className="a-btn sm" to="/rejoindre">J'ai un code</Link>
           {adult ? <Link className="a-btn sm primary" to="/famille">Mon espace</Link> : <Link className="a-btn sm primary" to="/connexion">Se connecter</Link>}
         </nav>

@@ -3,10 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Lumi, fr } from "@/ui/kit";
 import { ParentGate } from "@/ui/ParentGate";
 
-export function KidShell({ bar, children }: { bar: ReactNode; children: ReactNode }) {
+/** home : « gate » = bouton Accueil à maintenir appuyé (écrans d'enfant), « free » = simple bouton, « none » = aucun. */
+export function KidShell({ bar, children, home = "gate" }: { bar: ReactNode; children: ReactNode; home?: "gate" | "free" | "none" }) {
+  const nav = useNavigate();
   return (
     <div className="kid">
       <div className="kid-col">
+        {home !== "none" && (
+          <div className="kid-top">
+            {home === "gate"
+              ? <ParentGate compact icon="home" label="Accueil" hint="Maintiens appuyé pour revenir à l'accueil du site" onOpen={() => nav("/")} />
+              : <button type="button" className="gate compact" onClick={() => nav("/")}><span className="ring"><span><Icon name="home" size={16} /></span></span><b>Accueil</b></button>}
+          </div>
+        )}
         <header className="kid-bar">{bar}</header>
         <main className="kid-view">{children}</main>
       </div>

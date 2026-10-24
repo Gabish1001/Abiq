@@ -38,9 +38,8 @@ export function Join() {
   };
 
   return (
-    <KidShell bar={<>
-      <button type="button" className="icon-btn" aria-label="Retour à l'accueil" onClick={() => nav("/")}><Icon name="back" /></button>
-      <div className="bar-title">Rejoindre une séance</div><span style={{ width: 48 }} />
+    <KidShell home="free" bar={<>
+      <span style={{ width: 48 }} /><div className="bar-title">Rejoindre une séance</div><span style={{ width: 48 }} />
     </>}>
       <div className="stack screen-in join-box">
         {!info ? (
